@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Dearest Pooja</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <style>
+        body { 
+            margin: 0; 
+            background: radial-gradient(circle, #2b0000 0%, #000000 100%); 
+            overflow: hidden; 
+            font-family: 'Georgia', serif; 
+        }
+        
+        #ui-layer { 
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%);
+            z-index: 10; 
+            width: 80%; 
+            text-align: center;
+        }
+        
+        #message { 
+            color: #ffcad4; 
+            font-size: 1.5rem; 
+            line-height: 1.8; 
+            text-shadow: 0 0 10px rgba(255, 182, 193, 0.8);
+        }
+        
+        .footer-credit {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            color: rgba(255, 202, 212, 0.5);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="ui-layer">
+        <div id="message"></div>
+    </div>
+
+    <div class="footer-credit">Designed with all my heart — PankajUK07</div>
+
+    <script>
+        let particles = [];
+
+        function setup() {
+            createCanvas(windowWidth, windowHeight);
+        }
+
+        function draw() {
+            background(0, 15); // Slight trail effect
+            
+            // Create floating hearts
+            if (frameCount % 10 == 0) {
+                particles.push(new HeartParticle());
+            }
+
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update();
+                particles[i].show();
+                if (particles[i].finished()) {
+                    particles.splice(i, 1);
+                }
+            }
+        }
+
+        class HeartParticle {
+            constructor() {
+                this.x = random(width);
+                this.y = height + 10;
+                this.vx = random(-1, 1);
+                this.vy = random(-1, -3);
+                this.alpha = 255;
+                this.size = random(5, 15);
+                this.color = color(random(200, 255), random(50, 100), random(100, 150));
+            }
+
+            finished() { return this.alpha < 0; }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.alpha -= 1.5;
+            }
+
+            show() {
+                noStroke();
+                fill(this.color.levels[0], this.color.levels[1], this.color.levels[2], this.alpha);
+                beginShape();
+                let x = this.x;
+                let y = this.y;
+                let s = this.size / 10;
+                // Simple heart shape
+                vertex(x, y);
+                bezierVertex(x - 10 * s, y - 10 * s, x - 20 * s, y + 5 * s, x, y + 15 * s);
+                bezierVertex(x + 20 * s, y + 5 * s, x + 10 * s, y - 10 * s, x, y);
+                endShape(CLOSE);
+            }
+        }
+
+        // --- POOJA'S LOVE LETTER ---
+        setTimeout(() => {
+            new Typed('#message', {
+                strings: [
+                    'My Dearest Pooja...^1000\n',
+                    'I just wanted to take a moment to say...^800\n',
+                    'You are the best thing that ever happened to me. ❤️^1000\n',
+                    'Thank you for being my strength, my joy, and my home.\n',
+                    'I love you more than words can ever describe. ✨\n',
+                    'Always & Forever yours. 💖'
+                ],
+                typeSpeed: 60,
+                backSpeed: 30,
+                showCursor: false
+            });
+        }, 1000);
+
+        function windowResized() { resizeCanvas(windowWidth, windowHeight); }
+    </script>
+</body>
+</html>
